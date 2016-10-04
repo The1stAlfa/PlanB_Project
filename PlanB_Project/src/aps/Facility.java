@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 public class Facility {
     //aps Class Variables 
-    private static ArrayList<Collaborator> collaborator_list;
-    private static ArrayList<FuntionalArea> funtional_areas;
+    private static ArrayList<Collaborator> collaboratorList;
+    private static ArrayList<FuntionalArea> funtionalAreas;
     private ArrayList<Meeting> meetings;
     //************************************************************************
     private String id;
@@ -30,11 +30,11 @@ public class Facility {
     }
 
     public ArrayList<Collaborator> getCollaboratorList() {
-        return collaborator_list;
+        return collaboratorList;
     }
 
     public ArrayList<FuntionalArea> getFuntional_areas() {
-        return funtional_areas;
+        return funtionalAreas;
     }
 
     public ArrayList<Meeting> getMeetings() {
@@ -64,12 +64,12 @@ public class Facility {
         return s;
     }
 
-    public void setCollaboratorList(ArrayList<Collaborator> collaborator_list) {
-        this.collaborator_list = collaborator_list;
+    public void setCollaboratorList(ArrayList<Collaborator> collaboratorList) {
+        this.collaboratorList = collaboratorList;
     }
 
-    public void setFuntionalAreas(ArrayList<FuntionalArea> funtional_areas) {
-        this.funtional_areas = funtional_areas;
+    public void setFuntionalAreas(ArrayList<FuntionalArea> funtionalAreas) {
+        this.funtionalAreas = funtionalAreas;
     }
 
     public void setMeetings(ArrayList<Meeting> meetings) {
@@ -118,12 +118,11 @@ public class Facility {
         return null;
     }
     
-    public Collaborator searchCollaborator(int employee_id){
+    public Collaborator searchCollaborator(int employeeID){
         for(Collaborator collaborator: this.getCollaboratorList()){
-            if(collaborator.getEmployeeId() == employee_id)
+            if(collaborator.getEmployeeId() == employeeID)
                 return collaborator;
         }
         return null;
     }
-
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Action {
     //aps Class Variables 
     private Collaborator responsible;
-    private ArrayList<Task> tasks_list;
+    private ArrayList<Task> tasksList;
     private Status status;
     //************************************************************************
     // Format of a customize Action Plan
@@ -41,8 +41,8 @@ public class Action {
      * @param number
      * @param zeros
     */
-    public Action(String facilityId, String meetingAcronymName, short number, byte zeros){
-        setID(facilityId, meetingAcronymName,number, zeros);
+    public Action(String facilityID, String meetingAcronymName, short number, byte zeros){
+        setID(facilityID, meetingAcronymName,number, zeros);
         this.setDateCreated(LocalDateTime.now());
     }
     
@@ -82,7 +82,7 @@ public class Action {
      * @return
      */
     public ArrayList<Task> getTasksList() {
-        return tasks_list;
+        return tasksList;
     }
     
     /**
@@ -215,10 +215,10 @@ public class Action {
     
     /**
      *
-     * @param tasks_list
+     * @param tasksList
      */
-    public void setTasksList(ArrayList<Task> tasks_list) {
-        this.tasks_list = tasks_list;
+    public void setTasksList(ArrayList<Task> tasksList) {
+        this.tasksList = tasksList;
     }
     
     /**
@@ -231,13 +231,13 @@ public class Action {
     
     /**
      *
-     * @param facilityId
+     * @param facilityID
      * @param meetingAcronymName
      * @param number
      * @param zeros
      */
-    public void setID(String facilityId, String meetingAcronymName, short number, byte zeros) {
-        this.itemID = generateId(facilityId, meetingAcronymName, number, zeros);
+    public void setID(String facilityID, String meetingAcronymName, short number, byte zeros) {
+        this.itemID = generateId(facilityID, meetingAcronymName, number, zeros);
     }
 
     public void setID(String id){
@@ -350,8 +350,8 @@ public class Action {
         return true;
     }
     
-    public static String generateId(String facilityId, String meetingAcronymName,short number,byte zeros){
-        return String.format("%s%s%0" + zeros + "d", facilityId, meetingAcronymName,
+    public static String generateId(String facilityID, String meetingAcronymName,short number,byte zeros){
+        return String.format("%s%s%0" + zeros + "d", facilityID, meetingAcronymName,
                 (int)number + 1);
     }
 }

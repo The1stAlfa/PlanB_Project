@@ -8,7 +8,6 @@ package aps;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  *
@@ -16,15 +15,15 @@ import java.util.logging.Logger;
  */
 public class Meeting {
     //aps Class Variables 
-    private ArrayList<Collaborator> adt_participants; //aditional partcipants
+    private ArrayList<Collaborator> adtParticipants; //aditional partcipants
     private WorkTeam team; 
-    private ActionPlan action_plan;
+    private ActionPlan actionPlan;
  //************************************************************************
     private String name;
     private String acronym;
     private String purpose;
-    private LocalDateTime date_created;
-    private LocalDateTime date_modified;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateModified;
     
     public Meeting(){
         
@@ -46,9 +45,10 @@ public class Meeting {
      * @param date_created
      */
     public Meeting(String name, String purpose, String id,
-            LocalDate date_created){
+            LocalDateTime dateCreated){
         this.name = name;
         this.purpose = purpose;
+        this.dateCreated = dateCreated;
         
     }
 
@@ -57,7 +57,7 @@ public class Meeting {
      * @return
      */
     public ArrayList<Collaborator> getAditionalParticipants() {
-        return adt_participants;
+        return adtParticipants;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Meeting {
      * @return
      */
     public ActionPlan getActionPlan() {
-        return action_plan;
+        return actionPlan;
     }
 
     /**
@@ -105,7 +105,7 @@ public class Meeting {
      * @return
      */
     public LocalDateTime getDateCreated() {
-        return date_created;
+        return dateCreated;
     }
 
     /**
@@ -113,15 +113,15 @@ public class Meeting {
      * @return
      */
     public LocalDateTime getDateModified() {
-        return date_modified;
+        return dateModified;
     }
 
     /**
      *
-     * @param adt_participants
+     * @param adtParticipants
      */
-    public void setAditionalParticipants(ArrayList<Collaborator> adt_participants) {
-        this.adt_participants = adt_participants;
+    public void setAditionalParticipants(ArrayList<Collaborator> adtParticipants) {
+        this.adtParticipants = adtParticipants;
     }
 
     /**
@@ -134,10 +134,10 @@ public class Meeting {
 
     /**
      *
-     * @param plan
+     * @param actionPlan
      */
-    public void setActionPlan(ActionPlan action_plan) {
-        this.action_plan = action_plan;
+    public void setActionPlan(ActionPlan actionPlan) {
+        this.actionPlan = actionPlan;
     }
 
     /**
@@ -168,15 +168,15 @@ public class Meeting {
      *
      * @param date_created
      */
-    public void setDateCreated(LocalDateTime date_created) {
-        this.date_created = date_created;
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     /**
      *
      * @param date_modified
      */
-    public void setDateModified(LocalDateTime date_modified) {
-        this.date_modified = date_modified;
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
     }    
 }

@@ -17,34 +17,34 @@ public class ActionPlan {
     //aps Class Variables
     private APSummary summary;
     private Collaborator owner;
-    private ArrayList<Action> action_list;       
+    private ArrayList<Action> actionList;       
    //************************************************************************ 
     private short id;
-    private LocalDateTime date_created;
-    private LocalDateTime date_modified;
-    private LocalDateTime current_date;
+    private LocalDateTime dateCreated;
+    private LocalDateTime dateModified;
+    private LocalDateTime currentDate;
     private byte execution; // Action Plan porcentage of execution
     private byte zeros;
-    private byte initial_zeros = 4;
+    private byte initialZeros = 4;
             
     /**
      *
      */
     public ActionPlan(){
-        this.action_list = new ArrayList<>();
+        this.actionList = new ArrayList<>();
     }
 
     /**
      *
-     * @param meetingid
+     * @param id
      * @param owner
      */
     public ActionPlan(Collaborator owner, short id) {
         this.id = id;
         this.owner = owner;
-        this.date_created = LocalDateTime.now();
+        this.dateCreated = LocalDateTime.now();
         this.summary = summary;
-        action_list = null;
+        actionList = null;
     }
 
     public APSummary getSummary() {
@@ -56,7 +56,7 @@ public class ActionPlan {
     }
 
     public ArrayList<Action> getActionList() {
-        return action_list;
+        return actionList;
     }
 
     public short getId() {
@@ -64,15 +64,15 @@ public class ActionPlan {
     }
 
     public LocalDateTime getDateCreated() {
-        return date_created;
+        return dateCreated;
     }
 
     public LocalDateTime getDateModified() {
-        return date_modified;
+        return dateModified;
     }
 
     public LocalDateTime getCurrentDate() {
-        return current_date;
+        return currentDate;
     }
 
     public byte getExecution() {
@@ -91,24 +91,24 @@ public class ActionPlan {
         this.owner = owner;
     }
 
-    public void setActionList(ArrayList<Action> action_list) {
-        this.action_list = action_list;
+    public void setActionList(ArrayList<Action> actionList) {
+        this.actionList = actionList;
     }
 
     public void setId(short id) {
         this.id = id;
     }
 
-    public void setDateCreated(LocalDateTime date_created) {
-        this.date_created = date_created;
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public void setDateModified(LocalDateTime date_modified) {
-        this.date_modified = date_modified;
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
     }
 
-    public void setCurrentDate(LocalDateTime current_date) {
-        this.current_date = current_date;
+    public void setCurrentDate(LocalDateTime currentDate) {
+        this.currentDate = currentDate;
     }
 
     public void setExecution(byte execution) {
@@ -121,16 +121,16 @@ public class ActionPlan {
     
     public void setZeros(int number){
         String n = String.valueOf(number); 
-        if(n.length() == initial_zeros)
-            this.zeros = (byte)(initial_zeros+(byte)1);
-        else if(n.length() > initial_zeros)
+        if(n.length() == initialZeros)
+            this.zeros = (byte)(initialZeros+(byte)1);
+        else if(n.length() > initialZeros)
             this.zeros = (byte)(n.length()+1);
         else
-            this.zeros = initial_zeros;
+            this.zeros = initialZeros;
     }
     
     public Action searchAction(String key){
-        Optional<Action> a = action_list.stream()
+        Optional<Action> a = actionList.stream()
         .filter(p -> p.getID().equals(key))
         .findFirst();
         return a.isPresent() ? a.get() : null;
@@ -138,7 +138,7 @@ public class ActionPlan {
     }
     
     public boolean insertAction(Action action){
-        action_list.add(action);
+        actionList.add(action);
         return true;
     }
     
@@ -151,9 +151,9 @@ public class ActionPlan {
     }
     
     public Boolean deleteAction(String action_id){
-        for(Action action:action_list){
+        for(Action action:actionList){
             if(action.getID().equalsIgnoreCase(action_id)){
-                action_list.remove(action);
+                actionList.remove(action);
                 return true;
             }
         }

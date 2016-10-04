@@ -34,15 +34,50 @@ import javax.swing.JTextField;
  * @author Joel Ordoñez
  */
 public class AddActionForm extends JDialog{
-    private String meeting_name;
-    private Terminal terminal;
-    private JFrame parent;
-    
+    private final String meetingName;
+    private final Terminal terminal;
+    private final JFrame parent;
+     // Variables declaration - do not modify                     
+    private JButton add_button;
+    private JComboBox<String> cbDayEnd;
+    private JComboBox<String> cbDayReal;
+    private JComboBox<String> cbDayStart;
+    private JComboBox<String> cbMonthEnd;
+    private JComboBox<String> cbMonthReal;
+    private JComboBox<String> cbMonthStart;
+    private JComboBox<String> cbYearEnd;
+    private JComboBox<String> cbYearReal;
+    private JComboBox<String> cbYearStart;
+    private JComboBox<String> status_comboBox;
+    private JButton cancell_button;
+    private JLabel days_label;
+    private JLabel jLabel10;
+    private JLabel jLabel11;
+    private JLabel jLabel12;
+    private JLabel jLabel13;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel6;
+    private JLabel jLabel7;
+    private JLabel jLabel8;
+    private JLabel jLabel9;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JTextArea jTextArea1;
+    private JTextArea jTextArea2;
+    private JTextField tfDuration;
+    private JTextField tfId;
+    private JComboBox responsible_comboBox;
+    private JSlider progress_slider;
+    // End of variables declaration
     /**
      * Creates new form Ingreso
+     * @param parent
+     * @param terminal
+     * @param meetingName
      */
-    public AddActionForm(JFrame parent, Terminal terminal, String meeting_name) throws Exception {
-        this.meeting_name = meeting_name;
+    public AddActionForm(JFrame parent, Terminal terminal, String meetingName) throws Exception {
+        this.meetingName = meetingName;
         this.parent = parent;
         this.terminal = terminal;
         initComponents();
@@ -165,7 +200,7 @@ public class AddActionForm extends JDialog{
                         terminal.addAction(responsible_comboBox.getSelectedItem().toString(),jTextArea1.getText(),
                                 jTextArea2.getText(),start_date,end_date,
                                 status_comboBox.getSelectedItem().toString(),
-                                (byte)progress_slider.getValue(),duration,meeting_name);
+                                (byte)progress_slider.getValue(),duration,meetingName);
                         parent.setEnabled(true);
                         getJDialog().dispose();
                    }
@@ -279,7 +314,7 @@ public class AddActionForm extends JDialog{
         responsible_comboBox.setSelectedIndex(-1);
         progress_slider.setValue(0);
         progress_slider.setOpaque(false);
-        tfId.setText(terminal.getNewActionId(meeting_name));
+        tfId.setText(terminal.getNewActionId(meetingName));
         tfId.setEditable(false);
         setDates();
 
@@ -490,40 +525,6 @@ public class AddActionForm extends JDialog{
     }
     
     private void setTeamMembersNames(){
-        responsible_comboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meeting_name)));        
+        responsible_comboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meetingName)));        
     }
-    
-    // Variables declaration - do not modify                     
-    private JButton add_button;
-    private JComboBox<String> cbDayEnd;
-    private JComboBox<String> cbDayReal;
-    private JComboBox<String> cbDayStart;
-    private JComboBox<String> cbMonthEnd;
-    private JComboBox<String> cbMonthReal;
-    private JComboBox<String> cbMonthStart;
-    private JComboBox<String> cbYearEnd;
-    private JComboBox<String> cbYearReal;
-    private JComboBox<String> cbYearStart;
-    private JComboBox<String> status_comboBox;
-    private JButton cancell_button;
-    private JLabel days_label;
-    private JLabel jLabel10;
-    private JLabel jLabel11;
-    private JLabel jLabel12;
-    private JLabel jLabel13;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel jLabel6;
-    private JLabel jLabel7;
-    private JLabel jLabel8;
-    private JLabel jLabel9;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JTextArea jTextArea1;
-    private JTextArea jTextArea2;
-    private JTextField tfDuration;
-    private JTextField tfId;
-    private JComboBox responsible_comboBox;
-    private JSlider progress_slider;
-    // End of variables declaration                   
 }

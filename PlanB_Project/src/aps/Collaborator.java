@@ -11,11 +11,11 @@ package aps;
  */
 public class Collaborator {
     //aps Class Variables 
-    private FuntionalArea funtional_area; // Example: Production, Accounting
+    private FuntionalArea funtionalArea; // Example: Production, Accounting
     //************************************************************************
-    private String acronym_name; // This variable is exposed in the Action Plan
+    private String acronymName; // This variable is exposed in the Action Plan
     private String charge;       // where the collaborator belongs.
-    private int employee_id;
+    private int employeeID;
     private String firstName;
     private String middlename;
     private String lastName;
@@ -29,9 +29,8 @@ public class Collaborator {
 
     /**
      *
-     * @param username
-     * @param password
-     * @param names
+     * @param firstName
+     * @param lastName
      * @param charge
      */
     public Collaborator(String firstName, String lastName, String charge) {
@@ -43,11 +42,11 @@ public class Collaborator {
     }
 
     public FuntionalArea getFuntionalArea() {
-        return funtional_area;
+        return funtionalArea;
     }
 
     public String getAcronymName() {
-        return acronym_name;
+        return acronymName;
     }
     
     public String getCharge() {
@@ -55,7 +54,7 @@ public class Collaborator {
     }
 
     public int getEmployeeId() {
-        return employee_id;
+        return employeeID;
     }
     
     public String getFirstName() {
@@ -70,27 +69,27 @@ public class Collaborator {
         return lastName;
     }
     
-    public void setFuntionalArea(FuntionalArea funtional_area) {
-        this.funtional_area = funtional_area;
+    public void setFuntionalArea(FuntionalArea funtionalArea) {
+        this.funtionalArea = funtionalArea;
     }
 
     private void setAcronymName(){
-        acronym_name = firstName.substring(0,1);
+        acronymName = firstName.substring(0,1);
         String[] names = lastName.split(" ");
         for(String name:names)
-            acronym_name = acronym_name+name.substring(0,1).toUpperCase();
+            acronymName = acronymName+name.substring(0,1).toUpperCase();
     }
     
     public void setAcronymName(String acronym){
-        this.acronym_name = acronym;
+        this.acronymName = acronym;
     }
 
     public void setCharge(String charge) {
         this.charge = charge;
     }
 
-    public void setEmployeeId(int employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(int employeeID) {
+        this.employeeID = employeeID;
 
     }
     

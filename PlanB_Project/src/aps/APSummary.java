@@ -12,34 +12,34 @@ import java.time.LocalDateTime;
  * @author AI-Saac
  */
 public class APSummary {
-    private LocalDateTime date_modified;
-    private int actions_cancelled;
+    private LocalDateTime dateModified;
+    private int actionsCancelled;
     private int actions;  // Total of Actions
-    private int actions_completed_after_app;  // Completed after as per plan
-    private int actions_completed_app;  // Completed app = As Per Plan
-    private int actions_in_progress;
-    private int actions_near_to_due_day;
-    private int actions_overdue;
+    private int actionsCompletedAfterApp;  // Completed after as per plan
+    private int actionsCompletedApp;  // Completed app = As Per Plan
+    private int actionsInProgress;
+    private int actionsNearToDueDay;
+    private int actionsOverdue;
     
     /**
      *
      */
     public APSummary(){
         actions = 0;
-        actions_completed_after_app = 0;
-        actions_completed_app = 0;
-        actions_in_progress= 0;
-        actions_near_to_due_day = 0;
-        actions_overdue = 0;
-        actions_cancelled = 0;
+        actionsCompletedAfterApp = 0;
+        actionsCompletedApp = 0;
+        actionsInProgress= 0;
+        actionsNearToDueDay = 0;
+        actionsOverdue = 0;
+        actionsCancelled = 0;
     }
 
     public LocalDateTime getDateModified() {
-        return date_modified;
+        return dateModified;
     }
 
     public int getActionsCancelled() {
-        return actions_cancelled;
+        return actionsCancelled;
     }
 
     public int getActions() {
@@ -47,54 +47,54 @@ public class APSummary {
     }
 
     public int getActionsCompletedAfterApp() {
-        return actions_completed_after_app;
+        return actionsCompletedAfterApp;
     }
 
     public int getActionsCompletedApp() {
-        return actions_completed_app;
+        return actionsCompletedApp;
     }
 
     public int getActionsInProgress() {
-        return actions_in_progress;
+        return actionsInProgress;
     }
 
     public int getActionsNearDueDate() {
-        return actions_near_to_due_day;
+        return actionsNearToDueDay;
     }
 
     public int getActionsOverdue() {
-        return actions_overdue;
+        return actionsOverdue;
     }
     
-    public void setDate_modified(LocalDateTime date_modified) {
-        this.date_modified = date_modified;
+    public void setDate_modified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
     }
 
-    public void setActionsCancelled(int actions_cancelled) {
-        this.actions_cancelled = actions_cancelled;
+    public void setActionsCancelled(int actionsCancelled) {
+        this.actionsCancelled = actionsCancelled;
     }
 
     public void setActions(int actions) {
         this.actions = actions;
     }
 
-    public void setActionsCompletedAfterApp(int actions_completed_after_app) {
-        this.actions_completed_after_app = actions_completed_after_app;
+    public void setActionsCompletedAfterApp(int actionsCompletedAfterApp) {
+        this.actionsCompletedAfterApp = actionsCompletedAfterApp;
     }
 
-    public void setActionsCompletedApp(int actions_completed_app) {
-        this.actions_completed_app = actions_completed_app;
+    public void setActionsCompletedApp(int actionsCompletedApp) {
+        this.actionsCompletedApp = actionsCompletedApp;
     }
 
-    public void setActionsInProgress(int actions_in_progress) {
-        this.actions_in_progress = actions_in_progress;
+    public void setActionsInProgress(int actionsInProgress) {
+        this.actionsInProgress = actionsInProgress;
     }
 
-    public void setActionsNearToDueDay(int actions_near_to_due_day) {
-        this.actions_near_to_due_day = actions_near_to_due_day;
+    public void setActionsNearToDueDay(int actionsNearToDueDay) {
+        this.actionsNearToDueDay = actionsNearToDueDay;
     }
 
-    public void setActionsOverdue(int actions_overdue) {
-        this.actions_overdue = actions_overdue;
+    public void setActionsOverdue(int actionsOverdue) {
+        this.actionsOverdue = actionsOverdue;
     }
 }

@@ -14,21 +14,21 @@ import java.util.ArrayList;
 public class User {
     private String username = null;
     private String password = null;
-    private int employeeId;
+    private int employeeID;
     private Role role;
     private String email;
-    private ArrayList<String> access_list;
+    private ArrayList<String> accessList;
     
     public User() {
     
     }
   
     public User(String username, String password, Role role, 
-            ArrayList<String> access_list) {
+            ArrayList<String> accessList) {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.access_list = access_list;
+        this.accessList = accessList;
     }
 
     public String getUsername() {
@@ -43,8 +43,8 @@ public class User {
         return this.role;
     }
 
-    public ArrayList<String> getAccess_list() {
-        return access_list;
+    public ArrayList<String> getAccessList() {
+        return accessList;
     }
     
     public String getEmail(){
@@ -52,7 +52,7 @@ public class User {
     }
     
     public int getEmployeeId(){
-        return this.employeeId;
+        return this.employeeID;
     }
     
     public void setUsername(String username) {
@@ -67,8 +67,8 @@ public class User {
         this.role = role;
     }
 
-    public void setAccess_list(ArrayList<String> access_list) {
-        this.access_list = access_list;
+    public void setAccessList(ArrayList<String> accessList) {
+        this.accessList = accessList;
     }
     
     public void setEmail(String email){
@@ -76,6 +76,6 @@ public class User {
     }
     
     public void setEmployeeId(int id){
-        this.employeeId = id;   
+        this.employeeID = id;   
     }
 }

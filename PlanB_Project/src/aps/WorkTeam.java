@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class WorkTeam {
     //aps Class Variables
     private ArrayList<Collaborator> members;
-    private ArrayList<ActionPlan> plansId_list;
+    private ArrayList<ActionPlan> plansIdList;
     //************************************************************************
     private short id;
     private byte performance; // Team APP Percentage of performance
@@ -31,10 +31,10 @@ public class WorkTeam {
      * @param members
      * @param plansID_list
      */
-    public WorkTeam(ArrayList<Collaborator> members, ArrayList<ActionPlan> plansId_list) {
+    public WorkTeam(ArrayList<Collaborator> members, ArrayList<ActionPlan> plansIdList) {
         setId((short)2);
         this.members = members;
-        this.plansId_list = plansId_list;
+        this.plansIdList = plansIdList;
     }
 
     /**
@@ -50,7 +50,7 @@ public class WorkTeam {
      * @return
      */
     public ArrayList<ActionPlan> getPlansIdList() {
-        return plansId_list;
+        return plansIdList;
     }
 
     /**
@@ -81,8 +81,8 @@ public class WorkTeam {
      *
      * @param plansID_list
      */
-    public void setPlansIdList(ArrayList<ActionPlan> plansId_list) {
-        this.plansId_list = plansId_list;
+    public void setPlansIdList(ArrayList<ActionPlan> plansIdList) {
+        this.plansIdList = plansIdList;
     }
 
     /**

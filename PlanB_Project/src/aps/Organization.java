@@ -15,7 +15,7 @@ public class Organization {
     //aps Class Variables 
     private ArrayList<Facility> facilities;
     //************************************************************************
-    private final String brand_name = "Holcim";
+    private final String brandName = "Holcim";
        
     /**
      *
@@ -37,7 +37,7 @@ public class Organization {
      * @return
      */
     public String getName() {
-        return brand_name;
+        return brandName;
     }   
     
     public Facility getFacility(String id){

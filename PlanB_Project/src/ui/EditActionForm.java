@@ -36,10 +36,10 @@ import javax.swing.LayoutStyle;
 public class EditActionForm extends JDialog {
     private final JFrame parent;
     private final Terminal terminal;
-    private final String meeting_name;
-    private final Object[] row_data;
-    private Object[] row_data_modified;
-    private JButton save_button;
+    private final String meetingName;
+    private final Object[] rowData;
+    private Object[] rowDataModified;
+    private JButton saveButton;
     private JComboBox<String> cbDayEnd;
     private JComboBox<String> cbDayReal;
     private JComboBox<String> cbDayStart;
@@ -49,9 +49,9 @@ public class EditActionForm extends JDialog {
     private JComboBox<String> cbYearEnd;
     private JComboBox<String> cbYearReal;
     private JComboBox<String> cbYearStart;
-    private JButton cancell_button;
-    private JComboBox<String> status_comboBox;
-    private JLabel days_label;
+    private JButton cancellButton;
+    private JComboBox<String> statusComboBox;
+    private JLabel daysLabel;
     private JLabel jLabel10;
     private JLabel jLabel11;
     private JLabel jLabel12;
@@ -64,12 +64,12 @@ public class EditActionForm extends JDialog {
     private JLabel jLabel9;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
-    private JSlider progress_slider;
+    private JSlider progressSlider;
     private JTextArea jTextArea1;
     private JTextArea jTextArea2;
     private JTextField tfDuration;
-    private JTextField tfId;
-    private JComboBox responsible_comboBox;
+    private JTextField idTextField;
+    private JComboBox responsibleComboBox;
     
     /**
      * Creates new form Ingreso
@@ -78,11 +78,11 @@ public class EditActionForm extends JDialog {
      * @param meeting_name
      * @param row_data
      */
-    public EditActionForm(JFrame parent, Terminal terminal, String meeting_name, Object[] row_data) {
+    public EditActionForm(JFrame parent, Terminal terminal, String meetingName, Object[] rowData) {
         this.parent = parent;
         this.terminal = terminal;
-        this.meeting_name = meeting_name;
-        this.row_data = row_data;
+        this.meetingName = meetingName;
+        this.rowData = rowData;
         initComponents();
     }
 
@@ -95,7 +95,7 @@ public class EditActionForm extends JDialog {
     private void initComponents() {
         parent.setEnabled(false);
         addWindowListener();
-        days_label = new JLabel();
+        daysLabel = new JLabel();
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
         jLabel6 = new JLabel();
@@ -106,11 +106,11 @@ public class EditActionForm extends JDialog {
         jLabel11 = new JLabel();
         jLabel12 = new JLabel();
         jLabel13 = new JLabel();
-        tfId = new JTextField();
-        responsible_comboBox = new JComboBox();
+        idTextField = new JTextField();
+        responsibleComboBox = new JComboBox();
         tfDuration = new JTextField();
-        save_button = new JButton();
-        cancell_button = new JButton();
+        saveButton = new JButton();
+        cancellButton = new JButton();
         jScrollPane1 = new JScrollPane();
         jTextArea1 = new JTextArea();
         jScrollPane2 = new JScrollPane();
@@ -124,15 +124,15 @@ public class EditActionForm extends JDialog {
         cbMonthReal = new JComboBox<>();
         cbYearReal = new JComboBox<>();
         cbYearEnd = new JComboBox<>();
-        status_comboBox = new JComboBox<>();
-        progress_slider = new JSlider();
+        statusComboBox = new JComboBox<>();
+        progressSlider = new JSlider();
         
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit Action");
         getContentPane().setBackground(new Color(48, 49, 50));
         
-        days_label.setText("days");
-        days_label.setForeground(Color.decode("#C9CDD1"));
+        daysLabel.setText("days");
+        daysLabel.setForeground(Color.decode("#C9CDD1"));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("ID");
         jLabel2.setForeground(Color.decode("#C9CDD1"));
@@ -161,10 +161,10 @@ public class EditActionForm extends JDialog {
         jLabel13.setText("Duration");
         jLabel13.setForeground(Color.decode("#C9CDD1"));
         tfDuration.setText("");
-        responsible_comboBox.setBackground(Color.decode("#FCFEFC"));
+        responsibleComboBox.setBackground(Color.decode("#FCFEFC"));
         
-        save_button.setText("SAVE");
-        save_button.addActionListener((java.awt.event.ActionEvent evt) -> {
+        saveButton.setText("SAVE");
+        saveButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             String start_date = getDate(cbYearStart,cbMonthStart,cbDayStart);
             String end_date = getDate(cbYearEnd,cbMonthEnd,cbDayEnd);
             int duration = getDaysBetweenDates(start_date, end_date);
@@ -173,7 +173,7 @@ public class EditActionForm extends JDialog {
             else{
                 try {
                     if(detectActionDataModification()){
-                        terminal.modifyAction(row_data_modified,meeting_name);
+                        terminal.modifyAction(rowDataModified,meetingName);
                         parent.setEnabled(true);
                         getJDialog().dispose();
                     }
@@ -183,8 +183,8 @@ public class EditActionForm extends JDialog {
             }
         });
 
-        cancell_button.setText("CANCELL");
-        cancell_button.addActionListener((java.awt.event.ActionEvent evt) -> {
+        cancellButton.setText("CANCELL");
+        cancellButton.addActionListener((java.awt.event.ActionEvent evt) -> {
             parent.setEnabled(true);
             getJDialog().dispose();
         });
@@ -250,12 +250,12 @@ public class EditActionForm extends JDialog {
             "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", 
             "2025", "2026", "2027", "2028", "2029", "2030" 
         }));
-        status_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
             "IN_PROCESS", "OVERDUE", "COMPLETED_APP", "COMPLETED" 
         }));
-        status_comboBox.setBackground(Color.decode("#FCFEFC"));
-        status_comboBox.setSelectedIndex(1);
-        progress_slider.setOpaque(false);
+        statusComboBox.setBackground(Color.decode("#FCFEFC"));
+        statusComboBox.setSelectedIndex(1);
+        progressSlider.setOpaque(false);
         setTeamMembersNames();
         setRowData();
         cbYearStart.addItemListener((ItemEvent event) -> {
@@ -300,8 +300,8 @@ public class EditActionForm extends JDialog {
         });
         cbDayEnd.setBackground(Color.decode("#FCFEFC"));
         cbDayEnd.setEnabled(false);
-        tfId.setEditable(false);
-        tfId.setBackground(Color.decode("#FCFEFC"));
+        idTextField.setEditable(false);
+        idTextField.setBackground(Color.decode("#FCFEFC"));
         
         javax.swing.GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -321,11 +321,11 @@ public class EditActionForm extends JDialog {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(tfId, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(idTextField, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel6)
                                         .addGap(15, 15, 15)
-                                        .addComponent(responsible_comboBox, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                                        .addComponent(responsibleComboBox, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
                                     .addComponent(jScrollPane2)
                                     .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING)))
                             .addGroup(layout.createSequentialGroup()
@@ -363,17 +363,17 @@ public class EditActionForm extends JDialog {
                                     .addComponent(jLabel13, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(12, 12, 12)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(progress_slider, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(status_comboBox, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(progressSlider, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(statusComboBox, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(tfDuration, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(days_label))))))
+                                        .addComponent(daysLabel))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(165, 165, 165)
-                        .addComponent(save_button, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveButton, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
-                        .addComponent(cancell_button, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cancellButton, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -381,11 +381,11 @@ public class EditActionForm extends JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tfId, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idTextField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(responsible_comboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(responsibleComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -402,15 +402,15 @@ public class EditActionForm extends JDialog {
                         .addComponent(cbMonthStart, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                         .addComponent(cbYearStart, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(status_comboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(statusComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(progress_slider, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressSlider, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(save_button)
-                            .addComponent(cancell_button)))
+                            .addComponent(saveButton)
+                            .addComponent(cancellButton)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(cbDayEnd, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
@@ -424,7 +424,7 @@ public class EditActionForm extends JDialog {
                             .addComponent(cbYearReal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13)
                             .addComponent(tfDuration, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(days_label)))
+                            .addComponent(daysLabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -436,33 +436,33 @@ public class EditActionForm extends JDialog {
     }                        
     
     private void setRowData(){
-        tfId.setText(String.valueOf(row_data[0]));
-        responsible_comboBox.setSelectedIndex(getResponsibleIndex(row_data[1]));
-        jTextArea1.setText(String.valueOf(row_data[2]));
-        jTextArea2.setText(String.valueOf(row_data[3]));
-        LocalDate start_date = LocalDate.parse(String.valueOf(row_data[4]));
+        idTextField.setText(String.valueOf(rowData[0]));
+        responsibleComboBox.setSelectedIndex(getResponsibleIndex(rowData[1]));
+        jTextArea1.setText(String.valueOf(rowData[2]));
+        jTextArea2.setText(String.valueOf(rowData[3]));
+        LocalDate start_date = LocalDate.parse(String.valueOf(rowData[4]));
         cbYearStart.setSelectedIndex(searchYearIndex(start_date,cbYearStart));
         cbMonthStart.setSelectedIndex(searchMonthIndex(start_date,cbMonthStart));
         cbDayStart.setSelectedIndex(searchDayIndex(start_date,cbDayStart));
-        LocalDate end_date = LocalDate.parse(String.valueOf(row_data[5]));
+        LocalDate end_date = LocalDate.parse(String.valueOf(rowData[5]));
         cbYearEnd.setSelectedIndex(searchYearIndex(end_date,cbYearEnd));
         cbMonthEnd.setSelectedIndex(searchMonthIndex(end_date,cbMonthEnd));
         cbDayEnd.setSelectedIndex(searchDayIndex(end_date,cbDayEnd));
-        if(row_data[6] != null){
-            LocalDate real_date = LocalDate.parse(String.valueOf(row_data[6]));
-            cbYearReal.setSelectedIndex(searchYearIndex(real_date,cbYearReal));
-            cbMonthReal.setSelectedIndex(searchMonthIndex(real_date,cbMonthReal));
-            cbDayReal.setSelectedIndex(searchDayIndex(real_date,cbDayReal));
+        if(rowData[6] != null){
+            LocalDate realDate = LocalDate.parse(String.valueOf(rowData[6]));
+            cbYearReal.setSelectedIndex(searchYearIndex(realDate,cbYearReal));
+            cbMonthReal.setSelectedIndex(searchMonthIndex(realDate,cbMonthReal));
+            cbDayReal.setSelectedIndex(searchDayIndex(realDate,cbDayReal));
         }
         else{
             cbYearReal.setSelectedIndex(-1);
             cbMonthReal.setSelectedIndex(-1);
             cbDayReal.setSelectedIndex(-1);
         }
-        progress_slider.setValue(Integer.parseInt(String.valueOf(row_data[7])));
-        String status = String.valueOf(row_data[8]);
-        status_comboBox.setSelectedIndex(searchStatusIndex(status));
-        tfDuration.setText(String.valueOf(row_data[9]));
+        progressSlider.setValue(Integer.parseInt(String.valueOf(rowData[7])));
+        String status = String.valueOf(rowData[8]);
+        statusComboBox.setSelectedIndex(searchStatusIndex(status));
+        tfDuration.setText(String.valueOf(rowData[9]));
     }
     
     private int searchYearIndex(LocalDate date, JComboBox comboBox){
@@ -498,9 +498,9 @@ public class EditActionForm extends JDialog {
     }
     
     private int searchStatusIndex(String status){
-        int length = status_comboBox.getItemCount();
+        int length = statusComboBox.getItemCount();
         for(int index=0;index<length;index++){
-            if(status_comboBox.getItemAt(index).equalsIgnoreCase(status))
+            if(statusComboBox.getItemAt(index).equalsIgnoreCase(status))
                 return index;
         }
         return 0;
@@ -539,7 +539,7 @@ public class EditActionForm extends JDialog {
     }
     
     private void setTeamMembersNames(){
-        responsible_comboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meeting_name)));        
+        responsibleComboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meetingName)));        
     }
     
     private void addWindowListener(){
@@ -571,9 +571,9 @@ public class EditActionForm extends JDialog {
     
     private int getResponsibleIndex(Object row_data){
         String responsible_acronym = row_data.toString();
-        int length = responsible_comboBox.getItemCount();
+        int length = responsibleComboBox.getItemCount();
         for(int index=0;index<length;index++){
-            String acronym = getAcronymName(responsible_comboBox.getItemAt(index).toString());
+            String acronym = getAcronymName(responsibleComboBox.getItemAt(index).toString());
             if(acronym.equalsIgnoreCase(responsible_acronym))
                 return index;
         }
@@ -590,28 +590,28 @@ public class EditActionForm extends JDialog {
     
     private boolean detectActionDataModification(){
         byte detection = 0;
-        row_data_modified = new Object[10];
-        row_data_modified[0] = tfId.getText();
-        if(responsible_comboBox.getSelectedIndex() != getResponsibleIndex(row_data[1])){
-            row_data_modified[1] = responsible_comboBox.getSelectedItem().toString();
+        rowDataModified = new Object[10];
+        rowDataModified[0] = idTextField.getText();
+        if(responsibleComboBox.getSelectedIndex() != getResponsibleIndex(rowData[1])){
+            rowDataModified[1] = responsibleComboBox.getSelectedItem().toString();
             detection += 1;
         }
         else
-            row_data_modified[1] = null;
+            rowDataModified[1] = null;
         
-        if(!String.valueOf(row_data[2]).equalsIgnoreCase(jTextArea1.getText())){
-            row_data_modified[2] = jTextArea1.getText();
+        if(!String.valueOf(rowData[2]).equalsIgnoreCase(jTextArea1.getText())){
+            rowDataModified[2] = jTextArea1.getText();
             detection += 1;
         }
         else
-            row_data_modified[2] = null;
+            rowDataModified[2] = null;
         
-        if(!String.valueOf(row_data[3]).equalsIgnoreCase(jTextArea2.getText())){
-            row_data_modified[3] = jTextArea2.getText();
+        if(!String.valueOf(rowData[3]).equalsIgnoreCase(jTextArea2.getText())){
+            rowDataModified[3] = jTextArea2.getText();
             detection += 1;
         }
         else
-            row_data_modified[3] = null;
+            rowDataModified[3] = null;
         /*
         if(){
             
@@ -625,37 +625,37 @@ public class EditActionForm extends JDialog {
         else
             row_data_modified[5] = null;
         */
-        if(row_data[6] == null){
+        if(rowData[6] == null){
             if(cbYearReal.getSelectedIndex()!= -1 
                     && cbMonthReal.getSelectedIndex() != -1 
                     && cbDayReal.getSelectedIndex() != -1){
                 String date = cbYearReal.getSelectedItem().toString()+"-"
                         +getMonthValue(cbMonthReal.getSelectedItem().toString())+"-"
                         +cbDayReal.getSelectedItem().toString();
-                row_data_modified[6] = date;
+                rowDataModified[6] = date;
                 detection += 1;
             }
         }//falta cuando la fecha está establecida
         else
-            row_data_modified[6] = null;
+            rowDataModified[6] = null;
 
-        if(Integer.parseInt(String.valueOf(row_data[7])) != progress_slider.getValue()){
-            row_data_modified[7] = progress_slider.getValue();
+        if(Integer.parseInt(String.valueOf(rowData[7])) != progressSlider.getValue()){
+            rowDataModified[7] = progressSlider.getValue();
             detection += 1;
         }
         else
-            row_data_modified[7] = null;
+            rowDataModified[7] = null;
         
-        if(!String.valueOf(row_data[8]).equalsIgnoreCase(
-                status_comboBox.getSelectedItem().toString())){
-            row_data_modified[8] = status_comboBox.getSelectedItem().toString();
+        if(!String.valueOf(rowData[8]).equalsIgnoreCase(
+                statusComboBox.getSelectedItem().toString())){
+            rowDataModified[8] = statusComboBox.getSelectedItem().toString();
             detection += 1;
         }
         else
-            row_data_modified[8] = null;
-        row_data_modified[4] = null;
-        row_data_modified[5] = null;
-        row_data_modified[9] = null;
+            rowDataModified[8] = null;
+        rowDataModified[4] = null;
+        rowDataModified[5] = null;
+        rowDataModified[9] = null;
         if(detection != 0)
             return true;
         return false;

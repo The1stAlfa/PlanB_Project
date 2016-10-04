@@ -77,7 +77,7 @@ public class Aps {
      */
     public static void initSystem() throws IOException, FontFormatException{
         try{
-            SplashWindow w = new SplashWindow("src\\images\\planB-182x263.png", 
+            SplashWindow window = new SplashWindow("src\\images\\planB-182x263.png", 
                 new Frame(), 2500);
             terminalAPS.loadBusinessInformation();
             terminalUI = new UserInterfaceTerminal();
