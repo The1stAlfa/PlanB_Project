@@ -251,7 +251,8 @@ public class EditActionForm extends JDialog {
             "2025", "2026", "2027", "2028", "2029", "2030" 
         }));
         statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
-            "IN_PROCESS", "OVERDUE", "COMPLETED_APP", "COMPLETED" 
+            "IN_PROCESS", "COMPLETED_APP", "COMPLETED", "OVERDUE",
+            "CANCELLED", "NEAR_TO_DUE_DATE", "WAITING_TO_START" 
         }));
         statusComboBox.setBackground(Color.decode("#FCFEFC"));
         statusComboBox.setSelectedIndex(1);
@@ -539,7 +540,7 @@ public class EditActionForm extends JDialog {
     }
     
     private void setTeamMembersNames(){
-        responsibleComboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meetingName)));        
+        responsibleComboBox.setModel(new DefaultComboBoxModel(terminal.getParticipantsNames(meetingName)));        
     }
     
     private void addWindowListener(){
@@ -660,6 +661,7 @@ public class EditActionForm extends JDialog {
             return true;
         return false;
     }
+    
     private String getMonthValue(String abbreviation){
          Month mon[] = Month.values();
         for(Month m:mon){

@@ -81,10 +81,7 @@ public class DataBase {
             return rowsAffected;
         }
         catch(SQLException e){
-            
-        }
-        finally{
-            s.close();
+            System.out.println("PROBLEM");
         }
         return rowsAffected;
     }

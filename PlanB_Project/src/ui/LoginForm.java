@@ -239,7 +239,7 @@ public class LoginForm extends JFrame {
         loginButton.setFont(new Font("Dialog", 1, 18)); // NOI18N
         loginButton.setForeground(new Color(48, 49, 50));
         loginButton.setHorizontalAlignment(JTextField.CENTER);
-        loginButton.setText("LOGIN");
+        loginButton.setText("LOG IN");
         loginButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loginButton.setPreferredSize(new Dimension(200, 26));
         loginButton.setOpaque(true);

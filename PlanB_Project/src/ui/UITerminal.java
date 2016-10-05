@@ -91,7 +91,7 @@ import javax.swing.table.TableCellRenderer;
  * @author LoboAlfa2.0
  */
 
-public class UserInterfaceTerminal extends JFrame{
+public class UITerminal extends JFrame{
     private Dimension nativeScreenSize;
     private int value_at_changed, xPosition=0, yPosition=0, selected_row=-1;
     private JMenuBar mainMenu;
@@ -109,15 +109,17 @@ public class UserInterfaceTerminal extends JFrame{
                 compContentLabel, compAppContentLabel, overAppContentLabel, 
                 performanceLabel, exeLabel, performanceContentLabel, 
                 exeContentLabel;
-    private JPanel filter_panel, ap_information_panel, a_list_panel, 
-            gap_panel1,gap_panel2,page_panel;
-    private JLabel add_action_label, modify_action_label, delete_action_label;
-    private JComboBox filter_content_comboBox,filterCombobox,meetComboBox;
+    private JPanel filterPanel, apInformationPanel, actionListPanel, 
+            gapPanel1,gapPanel2,pagePanel;
+    private JLabel addActionLabel, modifyActionLabel, deleteActionLabel;
+    private JComboBox filterContentComboBox,filterCombobox,meetComboBox;
     private JTable jTable1; 
+    private JScrollPane jScrollPane1, jScrollPane2;
+    private JTextArea parTextArea;
     private boolean menuFlag = false, resizeFlag = false;
 
        
-    public UserInterfaceTerminal() throws IOException, FontFormatException, Exception{
+    public UITerminal() throws IOException, FontFormatException, Exception{
         initComponents(); 
     }
             
@@ -445,8 +447,7 @@ public class UserInterfaceTerminal extends JFrame{
         GridBagConstraints gbc = new GridBagConstraints();
         meetComboBox = new JComboBox();
         jTable1 = new JTable();
-        JScrollPane jScrollPane1, jScrollPane2;
-        JTextArea jTextArea1 = new JTextArea();
+        parTextArea = new JTextArea();
         
         
         actionPlanPanel = new JPanel();
@@ -454,13 +455,13 @@ public class UserInterfaceTerminal extends JFrame{
         actionPlanPanel.setMaximumSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
         actionPlanPanel.setBackground(Color.decode("#FCFEFC"));
         
-        ap_information_panel = new JPanel();
-        ap_information_panel.setLayout(new GridBagLayout());
-        ap_information_panel.setBackground(Color.decode("#FCFEFC"));
-        a_list_panel = new JPanel();
-        a_list_panel.setLayout(new BorderLayout());
-        a_list_panel.setPreferredSize(new Dimension(300,300));
-        a_list_panel.setBackground(Color.decode("#FCFEFC"));
+        apInformationPanel = new JPanel();
+        apInformationPanel.setLayout(new GridBagLayout());
+        apInformationPanel.setBackground(Color.decode("#FCFEFC"));
+        actionListPanel = new JPanel();
+        actionListPanel.setLayout(new BorderLayout());
+        actionListPanel.setPreferredSize(new Dimension(300,300));
+        actionListPanel.setBackground(Color.decode("#FCFEFC"));
         //**********************************************************************
         //  ActionPlan Information Panel Components
         //**********************************************************************
@@ -475,7 +476,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipadx = 2;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.insets = new Insets(0, 5, 0, 5);
-        ap_information_panel.add(apLabel, gbc);
+        apInformationPanel.add(apLabel, gbc);
         
         owLabel = new JLabel("Owner");
         owLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -492,7 +493,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 2, 2, 3);
-        ap_information_panel.add(owLabel, gbc);
+        apInformationPanel.add(owLabel, gbc);
 
         parLabel = new JLabel("Participants");
         parLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -507,7 +508,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.insets = new Insets(0, 4, 2, 3);
-        ap_information_panel.add(parLabel, gbc);
+        apInformationPanel.add(parLabel, gbc);
         
         meetLabel = new JLabel("Meeting");
         meetLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -521,7 +522,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 2, 2, 3);
-        ap_information_panel.add(meetLabel, gbc);
+        apInformationPanel.add(meetLabel, gbc);
         
         meetComboBox.setModel(new DefaultComboBoxModel<>(Aps.getTerminal().getMeetingsNames()));
         meetComboBox.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, new Color(204, 204, 204), null, null));
@@ -543,21 +544,19 @@ public class UserInterfaceTerminal extends JFrame{
                     owContentLabel.setText(plan.getOwner().getFirstName()+" "
                             +plan.getOwner().getLastName());
                     actContentLabel.setText(String.valueOf(summary.getActions()));
-                    compContentLabel.setText(String.valueOf(summary.getActionsCompletedApp()
-                            +summary.getActionsCompletedAfterApp()));
+                    compContentLabel.setText(String.valueOf(summary.getActionsCompleted()));
                     compAppContentLabel.setText(String.valueOf(summary.getActionsCompletedApp()));
                     overAppContentLabel.setText(String.valueOf(summary.getActionsOverdue()));
-                    jTextArea1.setText(getParticipantsAcronyms(meeting.getTeam()));
+                    parTextArea.setText(getParticipantsAcronyms(meeting.getTeam(),meeting.getAditionalParticipants()));
                     int team_performance = 100;
                     if(summary.getActionsOverdue() == 0 && summary.getActionsCompletedApp() > 0)
                         performanceContentLabel.setText(String.valueOf(team_performance)+"%");
                     else{
                         team_performance = (int)Math.round(((float)summary.getActionsCompletedApp()/
-                                ((float)summary.getActionsCompletedApp()+(float)summary.getActionsOverdue()))*100);
+                                ((float)summary.getActions()))*100);
                         performanceContentLabel.setText(String.valueOf(team_performance)+"%");
                     }
-                    int execution = (int)Math.round((float)((summary.getActionsCompletedApp()
-                            +summary.getActionsCompletedAfterApp())/(float)summary.getActions())*100);
+                    int execution = (int)Math.round((float)(summary.getActionsCompleted()/(float)summary.getActions())*100);
                     exeContentLabel.setText(String.valueOf(execution)+"%");
                     if(team_performance <= 70){
                         performanceContentLabel.setBackground(Color.decode("#E80C0C"));
@@ -574,7 +573,7 @@ public class UserInterfaceTerminal extends JFrame{
                 }
             }
             catch (Exception ex) {
-                Logger.getLogger(UserInterfaceTerminal.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UITerminal.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -585,7 +584,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipadx = 2;
         gbc.ipady = 2;
         gbc.insets = new Insets(0, 2, 2, 2);
-        ap_information_panel.add(meetComboBox, gbc);
+        apInformationPanel.add(meetComboBox, gbc);
 
         actLabel = new JLabel("Actions");
         actLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -598,7 +597,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 2, 2, 2);
-        ap_information_panel.add(actLabel, gbc);
+        apInformationPanel.add(actLabel, gbc);
 
         compLabel = new JLabel("Completed");
         compLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -611,7 +610,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 2, 2, 2);
-        ap_information_panel.add(compLabel, gbc);
+        apInformationPanel.add(compLabel, gbc);
 
         compAppLabel = new JLabel("Completed APP");
         compAppLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -627,7 +626,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.insets = new Insets(0, 4, 2, 2);
-        ap_information_panel.add(compAppLabel, gbc);
+        apInformationPanel.add(compAppLabel, gbc);
         
         overAppLabel = new JLabel("OverDue APP");
         overAppLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -640,7 +639,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 2, 2, 2);
-        ap_information_panel.add(overAppLabel, gbc);
+        apInformationPanel.add(overAppLabel, gbc);
 
         actContentLabel = new JLabel();
         actContentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -649,7 +648,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        ap_information_panel.add(actContentLabel, gbc);
+        apInformationPanel.add(actContentLabel, gbc);
 
         owContentLabel = new JLabel();
         owContentLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -664,7 +663,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.ipady = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 4, 3, 2);
-        ap_information_panel.add(owContentLabel, gbc);
+        apInformationPanel.add(owContentLabel, gbc);
         
         compContentLabel = new JLabel();
         compContentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -674,7 +673,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new java.awt.Insets(0, 2, 2, 2);
-        ap_information_panel.add(compContentLabel, gbc);
+        apInformationPanel.add(compContentLabel, gbc);
 
         compAppContentLabel = new JLabel();
         compAppContentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -686,13 +685,13 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHEAST;
-        ap_information_panel.add(compAppContentLabel, gbc);
+        apInformationPanel.add(compAppContentLabel, gbc);
 
         overAppContentLabel = new JLabel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 4;
-        ap_information_panel.add(overAppContentLabel, gbc);
+        apInformationPanel.add(overAppContentLabel, gbc);
 
         performanceLabel = new JLabel("Team Preformance APP");
         performanceLabel.setFont(new Font("Dialog", 1, 14)); // NOI18N
@@ -706,29 +705,29 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gbc.insets = new Insets(0, 12, 2, 2);
-        ap_information_panel.add(performanceLabel, gbc);
+        apInformationPanel.add(performanceLabel, gbc);
         
         jScrollPane1 = new JScrollPane();
         jScrollPane1.setBackground(Color.decode("#FCFEFC"));
         jScrollPane1.setBorder(BorderFactory.createEmptyBorder(0, 2, 2, 2));
         jScrollPane1.setPreferredSize(new Dimension(170, 25));
 
-        jTextArea1.setText("");
-        jTextArea1.setBackground(Color.decode("#FCFEFC"));
-        jTextArea1.setFont(new Font("Dialog", 1, 12));
-        jTextArea1.setEditable(false);
-        jTextArea1.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jTextArea1);
+        parTextArea.setText("");
+        parTextArea.setBackground(Color.decode("#FCFEFC"));
+        parTextArea.setFont(new Font("Dialog", 1, 12));
+        parTextArea.setEditable(false);
+        parTextArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        parTextArea.setLineWrap(true);
+        parTextArea.setWrapStyleWord(true);
+        parTextArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setViewportView(parTextArea);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridheight = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        ap_information_panel.add(jScrollPane1, gbc);
+        apInformationPanel.add(jScrollPane1, gbc);
 
         exeLabel = new JLabel("Overall Execution");
         exeLabel.setFont(new Font("Dialog", 1, 14));
@@ -739,7 +738,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.gridwidth = 3;
         gbc.gridheight = 2;
         gbc.fill = GridBagConstraints.BOTH;
-        ap_information_panel.add(exeLabel, gbc);
+        apInformationPanel.add(exeLabel, gbc);
 
         performanceContentLabel = new JLabel(); 
         performanceContentLabel.setBackground(new Color(55, 55, 55));
@@ -757,7 +756,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 12, 2, 2);
-        ap_information_panel.add(performanceContentLabel, gbc);
+        apInformationPanel.add(performanceContentLabel, gbc);
 
         exeContentLabel = new JLabel();
         exeContentLabel.setBackground(new Color(55, 55, 55));
@@ -773,7 +772,7 @@ public class UserInterfaceTerminal extends JFrame{
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 12, 2, 2);
-        ap_information_panel.add(exeContentLabel, gbc);
+        apInformationPanel.add(exeContentLabel, gbc);
         
         //**********************************************************************
         //  Action List Table Components
@@ -805,9 +804,9 @@ public class UserInterfaceTerminal extends JFrame{
                 int row = table.rowAtPoint(p);
                 if (e.getClickCount() == 2) {
                     if(row != -1){
-                        EditActionForm edit_action = new EditActionForm(getJFrame(),
+                        EditActionForm editAction = new EditActionForm(getJFrame(),
                             Aps.getTerminal(),meetingName, getSelectedRowData());
-                        edit_action.setLocationRelativeTo(getJFrame());
+                        editAction.setLocationRelativeTo(getJFrame());
                     }
                 }
             }
@@ -827,24 +826,24 @@ public class UserInterfaceTerminal extends JFrame{
         jScrollPane2.setViewportView(jTable1);
         jScrollPane2.getViewport().setBackground(Color.decode("#FCFEFC"));
         jScrollPane2.setBorder(BorderFactory.createEmptyBorder());
-        a_list_panel.add(filter_panel, BorderLayout.NORTH);
-        a_list_panel.add(jScrollPane2, BorderLayout.CENTER);
+        actionListPanel.add(filterPanel, BorderLayout.NORTH);
+        actionListPanel.add(jScrollPane2, BorderLayout.CENTER);
         
-        gap_panel1 = new JPanel();
-        gap_panel1.setPreferredSize(new Dimension(10,300));
-        gap_panel1.setMinimumSize(new Dimension(10,300));
-        gap_panel1.setOpaque(false);
-        gap_panel2 = new JPanel();
-        gap_panel2.setPreferredSize(new Dimension(10,300));
-        gap_panel2.setMinimumSize(new Dimension(10,300));
-        gap_panel2.setOpaque(false);
-        page_panel = new JPanel();
-        page_panel.setPreferredSize(new Dimension(Short.MAX_VALUE,15));
-        actionPlanPanel.add(ap_information_panel, BorderLayout.NORTH);
-        actionPlanPanel.add(a_list_panel, BorderLayout.CENTER);
-        actionPlanPanel.add(gap_panel1, BorderLayout.WEST);
-        actionPlanPanel.add(gap_panel2, BorderLayout.EAST);
-        actionPlanPanel.add(page_panel, BorderLayout.SOUTH);
+        gapPanel1 = new JPanel();
+        gapPanel1.setPreferredSize(new Dimension(10,300));
+        gapPanel1.setMinimumSize(new Dimension(10,300));
+        gapPanel1.setOpaque(false);
+        gapPanel2 = new JPanel();
+        gapPanel2.setPreferredSize(new Dimension(10,300));
+        gapPanel2.setMinimumSize(new Dimension(10,300));
+        gapPanel2.setOpaque(false);
+        pagePanel = new JPanel();
+        pagePanel.setPreferredSize(new Dimension(Short.MAX_VALUE,15));
+        actionPlanPanel.add(apInformationPanel, BorderLayout.NORTH);
+        actionPlanPanel.add(actionListPanel, BorderLayout.CENTER);
+        actionPlanPanel.add(gapPanel1, BorderLayout.WEST);
+        actionPlanPanel.add(gapPanel2, BorderLayout.EAST);
+        actionPlanPanel.add(pagePanel, BorderLayout.SOUTH);
         
     }
     
@@ -897,11 +896,11 @@ public class UserInterfaceTerminal extends JFrame{
     public void addFonts() throws FontFormatException{
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("gui_src\\fonts\\diane_de_france\\Diane de France.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src\\fonts\\diane_de_france\\Diane de France.ttf")));
         }
         catch (IOException e) {
             //Handle exception
-            System.out.println("MAL");
+            System.out.println("NO CARGAN LAS FUENTES");
         }
     }
     
@@ -914,29 +913,29 @@ public class UserInterfaceTerminal extends JFrame{
     }
     
     private void createFilterPanel(){
-        filter_panel = new JPanel();
-        filter_panel.setLayout(new BoxLayout(filter_panel, BoxLayout.LINE_AXIS));
-        filter_panel.setPreferredSize(new Dimension(actionPlanPanel.getMaximumSize().height, 40));
+        filterPanel = new JPanel();
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.LINE_AXIS));
+        filterPanel.setPreferredSize(new Dimension(actionPlanPanel.getMaximumSize().height, 40));
         JLabel filterLabel = new JLabel("Filter by");
         filterLabel.setHorizontalAlignment(JLabel.CENTER);
-        filterLabel.setPreferredSize(new Dimension(60,filter_panel.getPreferredSize().height));
+        filterLabel.setPreferredSize(new Dimension(60,filterPanel.getPreferredSize().height));
         filterCombobox = new JComboBox();
         filterCombobox.setMaximumSize(new Dimension(140,26));
         filterCombobox.setModel(new DefaultComboBoxModel<>(new Object[]
             {"DATE", "RESPONSIBLE","STATUS"}
         ));
 
-        filter_panel.add(filterLabel);
-        filter_panel.add(filterCombobox);
-        filter_panel.add(Box.createRigidArea(new Dimension(20,26)));
-        filter_content_comboBox = new JComboBox();
-        filter_content_comboBox.setMaximumSize(new Dimension(140,26));
-        filter_panel.add(filter_content_comboBox);
-        filter_panel.add(Box.createHorizontalGlue());
-        add_action_label = new JLabel();
-        add_action_label.setIcon(new ImageIcon(resource+"plus-24.png"));
-        add_action_label.setPreferredSize(new Dimension(35,filter_panel.getPreferredSize().height));
-        add_action_label.addMouseListener(new MouseAdapter() {
+        filterPanel.add(filterLabel);
+        filterPanel.add(filterCombobox);
+        filterPanel.add(Box.createRigidArea(new Dimension(20,26)));
+        filterContentComboBox = new JComboBox();
+        filterContentComboBox.setMaximumSize(new Dimension(140,26));
+        filterPanel.add(filterContentComboBox);
+        filterPanel.add(Box.createHorizontalGlue());
+        addActionLabel = new JLabel();
+        addActionLabel.setIcon(new ImageIcon(resource+"plus-24.png"));
+        addActionLabel.setPreferredSize(new Dimension(35,filterPanel.getPreferredSize().height));
+        addActionLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e){}
             @Override
@@ -949,7 +948,7 @@ public class UserInterfaceTerminal extends JFrame{
                         add_action = new AddActionForm(getJFrame(),Aps.getTerminal(),meetingName);
                         add_action.setLocationRelativeTo(getJFrame());
                     } catch (Exception ex) {
-                        Logger.getLogger(UserInterfaceTerminal.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(UITerminal.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
@@ -960,10 +959,10 @@ public class UserInterfaceTerminal extends JFrame{
                 }
             }
         }); 
-        modify_action_label = new JLabel();
-        modify_action_label.setIcon(new ImageIcon(resource+"edit-24.png"));
-        modify_action_label.setPreferredSize(new Dimension(35,filter_panel.getPreferredSize().height));
-        modify_action_label.addMouseListener(new MouseAdapter() {
+        modifyActionLabel = new JLabel();
+        modifyActionLabel.setIcon(new ImageIcon(resource+"edit-24.png"));
+        modifyActionLabel.setPreferredSize(new Dimension(35,filterPanel.getPreferredSize().height));
+        modifyActionLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e){}
             @Override
@@ -980,17 +979,18 @@ public class UserInterfaceTerminal extends JFrame{
                             "<html><center>No Action has been selected. Select one first.</html>",
                             "Validation",JOptionPane.ERROR_MESSAGE);
                 }
-                else{ 
-                    EditActionForm edit_action = new EditActionForm(getJFrame(),Aps.getTerminal(),meetingName, getSelectedRowData());
+                else{
+                    EditActionForm edit_action = new EditActionForm(getJFrame(),
+                            Aps.getTerminal(),meetingName, getSelectedRowData());
                     edit_action.setLocationRelativeTo(getJFrame());
                     jTable1.getSelectionModel().clearSelection();
                 }
             }
         }); 
-        delete_action_label = new JLabel();
-        delete_action_label.setIcon(new ImageIcon(resource+"delete-24.png"));
-        delete_action_label.setPreferredSize(new Dimension(35, filter_panel.getPreferredSize().height));
-        delete_action_label.addMouseListener(new MouseAdapter() {
+        deleteActionLabel = new JLabel();
+        deleteActionLabel.setIcon(new ImageIcon(resource+"delete-24.png"));
+        deleteActionLabel.setPreferredSize(new Dimension(35, filterPanel.getPreferredSize().height));
+        deleteActionLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e){}
             @Override
@@ -1024,7 +1024,7 @@ public class UserInterfaceTerminal extends JFrame{
                                 jTable1.repaint();
                             }
                         } catch (Exception ex) {
-                            Logger.getLogger(UserInterfaceTerminal.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(UITerminal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         
                     }
@@ -1033,9 +1033,9 @@ public class UserInterfaceTerminal extends JFrame{
                 }
             }
         });
-        filter_panel.add(add_action_label);
-        filter_panel.add(modify_action_label);
-        filter_panel.add(delete_action_label);
+        filterPanel.add(addActionLabel);
+        filterPanel.add(modifyActionLabel);
+        filterPanel.add(deleteActionLabel);
     }
     
     private void centerColumnContent(){
@@ -1063,7 +1063,6 @@ public class UserInterfaceTerminal extends JFrame{
         jTable1.getColumnModel().getColumn(6).setMaxWidth(73);  //R.FINISH DATE
         jTable1.getColumnModel().getColumn(7).setMaxWidth(50);  //PROGRESS
         jTable1.getColumnModel().getColumn(8).setMinWidth(120); //STATUS
-        jTable1.getColumnModel().getColumn(8).setMaxWidth(120); 
         jTable1.getColumnModel().getColumn(9).setMaxWidth(40);  //DURATION
     }
     
@@ -1074,13 +1073,15 @@ public class UserInterfaceTerminal extends JFrame{
         jTable1.repaint();
     }
     
-    public void modifiedTableContent(Object[] row_data_modified){
+    public void modifiedTableContent(Object[] rowDataModified){
         DefaultTableModel dm = (DefaultTableModel) jTable1.getModel();
-        int row_index = jTable1.getSelectedRow();
-        for(int column_index=1;column_index<row_data_modified.length;column_index++){
-            Object data = row_data_modified[column_index];
+        int rowIndex = jTable1.getSelectedRow();
+        for(int columnIndex=1;columnIndex<rowDataModified.length;columnIndex++){
+            Object data = rowDataModified[columnIndex];
             if(data != null)
-                dm.setValueAt(data, row_index, column_index);
+                if(jTable1.getRowSorter() != null)
+                    System.out.println("IS SORTER");
+                dm.setValueAt(data, rowIndex, columnIndex);
         }
         jTable1.repaint();
     }
@@ -1093,14 +1094,20 @@ public class UserInterfaceTerminal extends JFrame{
         Object[] rowData = new Object[10];
         int rowIndex = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
+        
+        if(jTable1.getRowSorter() != null)
+            rowIndex = jTable1.convertRowIndexToModel(rowIndex);
+        
         for(int columnIndex = 0;columnIndex < 10;columnIndex++)
             rowData[columnIndex] = model.getValueAt(rowIndex, columnIndex);
         return rowData;
     }
     
-    private String getParticipantsAcronyms(WorkTeam workteam){
+    private String getParticipantsAcronyms(WorkTeam workteam, ArrayList<Collaborator> adtParticipants){
         String s = "";
-        ArrayList<Collaborator> collaborators = workteam.getMembers();
+        ArrayList<Collaborator> collaborators = (ArrayList<Collaborator>)workteam.getMembers().clone();
+        if(!adtParticipants.isEmpty())
+            collaborators.addAll((ArrayList<Collaborator>)adtParticipants.clone());
         
         for(int i=0;i<collaborators.size();i++){
             if(i == collaborators.size()-1)

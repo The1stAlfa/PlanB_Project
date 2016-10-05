@@ -7,7 +7,7 @@ package sys;
 
 import ui.LoginForm;
 import ui.SplashWindow;
-import ui.UserInterfaceTerminal;
+import ui.UITerminal;
 import aps.Organization;
 import java.awt.FontFormatException;
 import java.awt.Frame;
@@ -27,7 +27,7 @@ public class Aps {
      */
     private static  Organization org = new Organization();
     private static Terminal terminalAPS;
-    private static UserInterfaceTerminal terminalUI;
+    private static UITerminal terminalUI;
     
     /**
      * @param args the command line arguments
@@ -66,7 +66,7 @@ public class Aps {
      *
      * @return
      */
-    public static UserInterfaceTerminal getUI(){
+    public static UITerminal getUI(){
         return terminalUI;
     }
     
@@ -80,7 +80,7 @@ public class Aps {
             SplashWindow window = new SplashWindow("src\\images\\planB-182x263.png", 
                 new Frame(), 2500);
             terminalAPS.loadBusinessInformation();
-            terminalUI = new UserInterfaceTerminal();
+            terminalUI = new UITerminal();
         }
         catch(Exception e){
         }

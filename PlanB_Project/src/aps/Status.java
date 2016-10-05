@@ -15,7 +15,7 @@ public enum Status {
     /**
      *
      */
-    COMPLETED_AFTER_APP (1),
+    COMPLETED (1),
     /**
      *
      */

@@ -100,7 +100,8 @@ public class Terminal{
         
     }
     
-    public boolean login(String username, String password) throws NoSuchAlgorithmException, SQLException, Exception{
+    public boolean login(String username, String password) throws NoSuchAlgorithmException, 
+            SQLException, Exception{
         boolean isAuthenticated = false;
         int count;
         String saltedPassword = SALT + password;
@@ -314,6 +315,7 @@ public class Terminal{
                 meeting.setDateCreated(LocalDateTime.parse(result.getString("dateCreated").substring(0,19),formatter));
                 meeting.setActionPlan(getActionPlan(Integer.parseInt(results[count].toString())));
                 meeting.setTeam(getTeam((int)results[count],facility));
+                meeting.setAditionalParticipants(getAdtParticipants((int)results[count],facility));
                 list.add(meeting);   
                 count++;
             }
@@ -330,46 +332,46 @@ public class Terminal{
                 + "FROM planb.actionplan INNER JOIN  planb.meeting_actionplan "
                 + "ON actionPlanId=actionPlan_id AND meeting_id='"+meetingID+"';";
 
-        ResultSet rs = planB.selectQuery(query);
-        if(rs != null){
-            rs.next();
-            actionPlan.setId((short) rs.getInt("actionPlanId"));
-            actionPlan.setDateCreated(LocalDateTime.parse(rs.getString("dateCreated").substring(0,19), formatter));
-            actionPlan.setDateModified(LocalDateTime.parse(rs.getString("dateModified").substring(0,19), formatter));
-            actionPlan.setExecution((byte)rs.getInt("execution"));
+        ResultSet result = planB.selectQuery(query);
+        if(result != null){
+            result.next();
+            actionPlan.setId((short) result.getInt("actionPlanId"));
+            actionPlan.setDateCreated(LocalDateTime.parse(result.getString("dateCreated").substring(0,19), formatter));
+            actionPlan.setDateModified(LocalDateTime.parse(result.getString("dateModified").substring(0,19), formatter));
+            actionPlan.setExecution((byte)result.getInt("execution"));
             query = "SELECT dateModified, actions, actionsCancelled,"
-                + "actionsCompletedAfterApp,actionsCompletedApp,"
+                + "actionsCompleted,actionsCompletedApp,"
                 + "actionsInProgress,actionsNearToDueDay,actionsOverdue "
                 + "FROM planb.apsummary INNER JOIN planb.actionplan_apsummary ON "
                 + "apSumaryId=apSummary_id and actionPlan_id="+actionPlan.getId()+";";
-            rs = planB.selectQuery(query);
-            if(rs != null){
-                rs.next();
+            result = planB.selectQuery(query);
+            if(result != null){
+                result.next();
                 APSummary apsummary = new APSummary();
-                apsummary.setDate_modified(LocalDateTime.parse(rs.getString("dateModified").substring(0,19), formatter));
-                apsummary.setActions(rs.getInt("actions"));
-                apsummary.setActionsCompletedAfterApp(rs.getInt("actionsCompletedAfterApp"));
-                apsummary.setActionsCompletedApp(rs.getInt("actionsCompletedApp"));
-                apsummary.setActionsInProgress(rs.getInt("actionsInProgress"));
-                apsummary.setActionsNearToDueDay(rs.getInt("actionsNearToDueDay"));
-                apsummary.setActionsCancelled(rs.getInt("actionsCancelled"));
-                apsummary.setActionsOverdue(rs.getInt("actionsOverdue"));
-                actionPlan.setZeros(rs.getInt("actions"));
+                apsummary.setDate_modified(LocalDateTime.parse(result.getString("dateModified").substring(0,19), formatter));
+                apsummary.setActions(result.getInt("actions"));
+                apsummary.setActionsCompleted(result.getInt("actionsCompleted"));
+                apsummary.setActionsCompletedApp(result.getInt("actionsCompletedApp"));
+                apsummary.setActionsInProgress(result.getInt("actionsInProgress"));
+                apsummary.setActionsNearToDueDay(result.getInt("actionsNearToDueDay"));
+                apsummary.setActionsCancelled(result.getInt("actionsCancelled"));
+                apsummary.setActionsOverdue(result.getInt("actionsOverdue"));
+                actionPlan.setZeros(result.getInt("actions"));
                 actionPlan.setSummary(apsummary);
                 query = "SELECT employeeId, firstname, middlename, lastname, "
                         + "acronymName, charge FROM planb.collaborator INNER JOIN"
                         + " planb.collaborator_actionplan ON "
                         + "employeeID=collaborator_id AND actionPlan_id="+(int)actionPlan.getId()+";";
-                rs = planB.selectQuery(query);
-                if(rs != null){
-                    rs.next();
+                result = planB.selectQuery(query);
+                if(result != null){
+                    result.next();
                     Collaborator owner = new Collaborator();
-                    owner.setEmployeeId(rs.getInt("employeeId"));
-                    owner.setFirstName(rs.getString("firstname"));
-                    owner.setMiddleName(rs.getString("middlename"));
-                    owner.setLastName(rs.getString("lastname"));
-                    owner.setAcronymName(rs.getString("acronymName"));
-                    owner.setCharge(rs.getString("charge"));
+                    owner.setEmployeeId(result.getInt("employeeId"));
+                    owner.setFirstName(result.getString("firstname"));
+                    owner.setMiddleName(result.getString("middlename"));
+                    owner.setLastName(result.getString("lastname"));
+                    owner.setAcronymName(result.getString("acronymName"));
+                    owner.setCharge(result.getString("charge"));
                     actionPlan.setOwner(owner);
                     actionPlan.setCurrentDate(LocalDateTime.now());
                 }
@@ -588,7 +590,8 @@ public class Terminal{
         planB.insertQuery(query);
     }
     
-    private boolean updateActionToDatabase(String actionID,ArrayList<String> columns, ArrayList<Object> list) throws SQLException, Exception{
+    private boolean updateActionToDatabase(String actionID,ArrayList<String> columns, ArrayList<Object> list)
+            throws SQLException, Exception{
         int isUpdated;
         String query, values="";
         if(columns != null){
@@ -638,10 +641,13 @@ public class Terminal{
         return false;
     }
     
-    public String[] getTeamMembersNames(String meetingName){
+    public String[] getParticipantsNames(String meetingName){
         Facility facility = org.getFacility("01");
         Meeting meeting = facility.searchMeeting(meetingName);
-        ArrayList<Collaborator> members = meeting.getTeam().getMembers();
+        ArrayList<Collaborator> members = (ArrayList<Collaborator>)meeting.getTeam().getMembers().clone();
+        if(!meeting.getAditionalParticipants().isEmpty())
+            members.addAll((ArrayList<Collaborator>)meeting.getAditionalParticipants().clone());
+        
         if(members != null){   
             int number_of_members = members.size();
             String[] names = new String[number_of_members];
@@ -651,6 +657,19 @@ public class Terminal{
                 names[i] = collaborator_names;
             }
             return names;
+        }
+        return null;
+    }
+    
+    private ArrayList getAdtParticipants(int meetingID, Facility facility) throws SQLException{
+        String query = "SELECT collaborator_id FROM planb.adtparticipants_meeting "
+                + "WHERE meeting_id="+meetingID+";";
+        ResultSet result = planB.selectQuery(query);
+        if(result != null){
+            ArrayList<Collaborator> list = new ArrayList();
+            while(result.next())
+                list.add(facility.searchCollaborator(result.getInt("collaborator_id")));
+            return list;
         }
         return null;
     }

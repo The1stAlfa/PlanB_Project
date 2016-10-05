@@ -15,7 +15,7 @@ public class APSummary {
     private LocalDateTime dateModified;
     private int actionsCancelled;
     private int actions;  // Total of Actions
-    private int actionsCompletedAfterApp;  // Completed after as per plan
+    private int actionsCompleted;  // Completed after as per plan
     private int actionsCompletedApp;  // Completed app = As Per Plan
     private int actionsInProgress;
     private int actionsNearToDueDay;
@@ -26,7 +26,7 @@ public class APSummary {
      */
     public APSummary(){
         actions = 0;
-        actionsCompletedAfterApp = 0;
+        actionsCompleted = 0;
         actionsCompletedApp = 0;
         actionsInProgress= 0;
         actionsNearToDueDay = 0;
@@ -46,8 +46,8 @@ public class APSummary {
         return actions;
     }
 
-    public int getActionsCompletedAfterApp() {
-        return actionsCompletedAfterApp;
+    public int getActionsCompleted() {
+        return actionsCompleted;
     }
 
     public int getActionsCompletedApp() {
@@ -78,8 +78,8 @@ public class APSummary {
         this.actions = actions;
     }
 
-    public void setActionsCompletedAfterApp(int actionsCompletedAfterApp) {
-        this.actionsCompletedAfterApp = actionsCompletedAfterApp;
+    public void setActionsCompleted(int actionsCompleted) {
+        this.actionsCompleted = actionsCompleted;
     }
 
     public void setActionsCompletedApp(int actionsCompletedApp) {

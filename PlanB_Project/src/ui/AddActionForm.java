@@ -67,8 +67,8 @@ public class AddActionForm extends JDialog{
     private JTextArea jTextArea2;
     private JTextField tfDuration;
     private JTextField tfId;
-    private JComboBox responsible_comboBox;
-    private JSlider progress_slider;
+    private JComboBox responsibleComboBox;
+    private JSlider progressSlider;
     // End of variables declaration
     /**
      * Creates new form Ingreso
@@ -91,30 +91,7 @@ public class AddActionForm extends JDialog{
     @SuppressWarnings("unchecked")
     private void initComponents() throws Exception {
         parent.setEnabled(false);
-        this.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e){}
-
-            @Override
-            public void windowClosing(WindowEvent e){
-                parent.setEnabled(true);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e){}
-
-            @Override
-            public void windowIconified(WindowEvent e){}
-
-            @Override
-            public void windowDeiconified(WindowEvent e){}
-
-            @Override
-            public void windowActivated(WindowEvent e){}
-
-            @Override
-            public void windowDeactivated(WindowEvent e){}
-        });
+        addWindowListener();
         
         jLabel2 = new JLabel();
         jLabel3 = new JLabel();
@@ -127,7 +104,7 @@ public class AddActionForm extends JDialog{
         jLabel12 = new JLabel();
         jLabel13 = new JLabel();
         tfId = new JTextField();
-        responsible_comboBox = new JComboBox();
+        responsibleComboBox = new JComboBox();
         tfDuration = new JTextField();
         add_button = new JButton();
         cancell_button = new JButton();
@@ -145,7 +122,7 @@ public class AddActionForm extends JDialog{
         cbYearReal = new javax.swing.JComboBox<>();
         cbYearEnd = new javax.swing.JComboBox<>();
         status_comboBox = new javax.swing.JComboBox<>();
-        progress_slider = new JSlider();
+        progressSlider = new JSlider();
         days_label = new JLabel();
        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -197,10 +174,10 @@ public class AddActionForm extends JDialog{
                         "<html><center>Are you sure you want to add the Action?",
                         "Delete Action",JOptionPane.DEFAULT_OPTION, 
                         JOptionPane.QUESTION_MESSAGE, null, options, options[0]) == 0){
-                        terminal.addAction(responsible_comboBox.getSelectedItem().toString(),jTextArea1.getText(),
+                        terminal.addAction(responsibleComboBox.getSelectedItem().toString(),jTextArea1.getText(),
                                 jTextArea2.getText(),start_date,end_date,
                                 status_comboBox.getSelectedItem().toString(),
-                                (byte)progress_slider.getValue(),duration,meetingName);
+                                (byte)progressSlider.getValue(),duration,meetingName);
                         parent.setEnabled(true);
                         getJDialog().dispose();
                    }
@@ -307,13 +284,14 @@ public class AddActionForm extends JDialog{
             tfDuration.setText(String.valueOf(getDaysBetweenDates(start_date, end_date)));
         });
         status_comboBox.setModel(new DefaultComboBoxModel<>(new String[] { 
-            "IN_PROCESS", "OVERDUE", "COMPLETED_APP", "COMPLETED" 
+            "IN_PROCESS", "COMPLETED_APP", "COMPLETED", "OVERDUE",
+            "CANCELLED", "NEAR_TO_DUE_DATE", "WAITING_TO_START"
         }));
         status_comboBox.setSelectedIndex(0);
-        setTeamMembersNames();
-        responsible_comboBox.setSelectedIndex(-1);
-        progress_slider.setValue(0);
-        progress_slider.setOpaque(false);
+        setParticipantsNames();
+        responsibleComboBox.setSelectedIndex(-1);
+        progressSlider.setValue(0);
+        progressSlider.setOpaque(false);
         tfId.setText(terminal.getNewActionId(meetingName));
         tfId.setEditable(false);
         setDates();
@@ -340,7 +318,7 @@ public class AddActionForm extends JDialog{
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel6)
                                         .addGap(15, 15, 15)
-                                        .addComponent(responsible_comboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                                        .addComponent(responsibleComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
                                     .addComponent(jScrollPane2)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addGroup(layout.createSequentialGroup()
@@ -378,7 +356,7 @@ public class AddActionForm extends JDialog{
                                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(12, 12, 12)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(progress_slider, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(progressSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(status_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(tfDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -397,7 +375,7 @@ public class AddActionForm extends JDialog{
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(responsible_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(responsibleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -420,7 +398,7 @@ public class AddActionForm extends JDialog{
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(progress_slider, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(add_button)
@@ -524,7 +502,34 @@ public class AddActionForm extends JDialog{
                 +"-"+day.getSelectedItem().toString();
     }
     
-    private void setTeamMembersNames(){
-        responsible_comboBox.setModel(new DefaultComboBoxModel(terminal.getTeamMembersNames(meetingName)));        
+    private void setParticipantsNames(){
+        responsibleComboBox.setModel(new DefaultComboBoxModel(terminal.getParticipantsNames(meetingName)));        
+    }
+    
+    private void addWindowListener(){
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e){}
+
+            @Override
+            public void windowClosing(WindowEvent e){
+                parent.setEnabled(true);
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e){}
+
+            @Override
+            public void windowIconified(WindowEvent e){}
+
+            @Override
+            public void windowDeiconified(WindowEvent e){}
+
+            @Override
+            public void windowActivated(WindowEvent e){}
+
+            @Override
+            public void windowDeactivated(WindowEvent e){}
+        });
     }
 }
